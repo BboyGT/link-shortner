@@ -1,0 +1,39 @@
+// Sniply — Link Shortener with Analytics
+// Designed and built by Godstime Aburu (Golden Masathy)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Link {
+  id          String   @id @default(cuid())
+  originalUrl String
+  shortCode   String   @unique
+  title       String?
+  clicks      Int      @default(0)
+  isActive    Boolean  @default(true)
+  expiresAt   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  clickEvents ClickEvent[]
+}
+
+model ClickEvent {
+  id        String   @id @default(cuid())
+  linkId    String
+  link      Link     @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  referrer  String?
+  browser   String?
+  os        String?
+  device    String?
+  country   String?
+  city      String?
+  ip        String?
+  createdAt DateTime @default(now())
+}
