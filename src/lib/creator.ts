@@ -1,8 +1,5 @@
 /**
- * creator.ts — Godstime Aburu
- *
- * Drop this file into any project at src/lib/creator.ts
- * Import { CREATOR } wherever you need attribution, metadata, or signatures.
+ * Creator metadata for project attribution, metadata, and signatures.
  */
 
 export const CREATOR = {
@@ -19,6 +16,8 @@ export const CREATOR = {
   year: new Date().getFullYear(),
 } as const;
 
-export const copyright = () => `© ${CREATOR.year} ${CREATOR.name}`;
+export const copyright = (projectName?: string) =>
+  `Copyright ${CREATOR.year} ${CREATOR.name}${projectName ? ` - ${projectName}` : ""}`;
+
 export const attribution = (projectName: string) =>
-  `${projectName} — designed and built by ${CREATOR.name} (${CREATOR.alias})`;
+  `${projectName} - designed and built by ${CREATOR.name} (${CREATOR.alias})`;

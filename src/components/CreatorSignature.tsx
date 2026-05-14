@@ -1,6 +1,6 @@
 'use client'
 
-import { CREATOR, copyright } from '@/lib/creator'
+import { CREATOR } from '@/lib/creator'
 import { useEffect } from 'react'
 
 interface CreatorSignatureProps {
@@ -8,7 +8,7 @@ interface CreatorSignatureProps {
   projectName?: string
 }
 
-function ConsoleWatermark() {
+function ConsoleWatermark({ projectName }: { projectName: string }) {
   useEffect(() => {
     const style = `
       font-size: 14px;
@@ -28,14 +28,14 @@ function ConsoleWatermark() {
       line-height: 1.5;
     `
     console.log(
-      `%c${CREATOR.name}  ${CREATOR.alias}\n\n${CREATOR.role} · ${CREATOR.location}`,
+      `%c${projectName} - ${CREATOR.name} (${CREATOR.alias})\n\n${CREATOR.role} - ${CREATOR.location}`,
       style
     )
     console.log(
       `%c${CREATOR.github}`,
       dimStyle
     )
-  }, [])
+  }, [projectName])
 
   return null
 }
@@ -45,25 +45,25 @@ export default function CreatorSignature({
   projectName = 'Sniply',
 }: CreatorSignatureProps) {
   if (variant === 'console') {
-    return <ConsoleWatermark />
+    return <ConsoleWatermark projectName={projectName} />
   }
 
   if (variant === 'inline') {
     return (
       <span className="text-xs text-muted-foreground">
-        {CREATOR.name} · {CREATOR.alias}
+        {projectName} - {CREATOR.name} - {CREATOR.alias}
       </span>
     )
   }
 
-  // Default: badge variant — fixed bottom-right monogram
+  // Default: badge variant, fixed bottom-right monogram.
   return (
     <a
       href={CREATOR.github}
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-4 right-4 z-50 group"
-      aria-label={CREATOR.signature}
+      aria-label={`${projectName} - ${CREATOR.signature}`}
     >
       <div className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/10 opacity-55 backdrop-blur-sm transition-all duration-300 hover:opacity-100 hover:bg-foreground/15 hover:scale-110 hover:shadow-lg">
         <span className="text-[11px] font-bold tracking-tight text-foreground">
